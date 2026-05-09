@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { HandlerSrcCliResponse } from 'src/response/http_exception.filter';
 import { MainServiceClient } from 'src/services/main.service';
 
 @Injectable()
@@ -11,6 +12,6 @@ export class AuthService {
       action: 'test',
       query: [],
     });
-    return data;
+    return HandlerSrcCliResponse(data);
   }
 }
