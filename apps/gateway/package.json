@@ -25,6 +25,7 @@
     "@nestjs/microservices": "^11.1.19",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.4.2",
+    "class-validator": "^0.15.1",
     "config": "^4.4.1",
     "express": "^5.2.1",
     "nestjs": "^0.0.1",

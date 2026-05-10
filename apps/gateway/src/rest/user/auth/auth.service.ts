@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { HandlerSrcCliResponse } from 'src/response/http_exception.filter';
 import { MainServiceClient } from 'src/services/main.service';
+import { SendOtp } from './dto';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly mainSrcCli: MainServiceClient) {}
 
-  async test() {
-    const data = await this.mainSrcCli.callAction({
+  async sendOtp(data: SendOtp) {
+    const body = await this.mainSrcCli.callAction({
       provider: 'USERS',
-      action: 'test',
-      query: [],
+      action: 'sendOtp',
+      query: data,
     });
-    return HandlerSrcCliResponse(data);
+    return HandlerSrcCliResponse(body);
   }
 }
