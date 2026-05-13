@@ -1,8 +1,10 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { RedisService } from 'src/databases/redis/redis.service';
 import { SrvError } from 'src/services/dto';
 import { Generator } from 'src/utils/generator';
+import { Repository } from 'typeorm';
+import { User } from 'src/databases/postgres/entities/user/user.entity';
 
 @Injectable()
 export class UserService {
@@ -11,6 +13,8 @@ export class UserService {
     private readonly generator: Generator,
     private readonly redisService: RedisService,
     private readonly jwtService: JwtService,
+    @Inject('USER_REPOSITORY')
+    private readonly userRepo: Repository<User>,
   ) {}
   async sendOtp(data) {
     const { phone } = data.query;
@@ -38,10 +42,15 @@ export class UserService {
     if (!existing || existing != code)
       throw new SrvError(HttpStatus.BAD_REQUEST, 'Invalid code');
     await this.redisService.cacheCli.del(key);
-    const payload = { phone };
+    let user: any = await this.userRepo.findOne({ where: { phone } });
+    if (!user) {
+      user = await this.userRepo.create({ phone });
+      await this.userRepo.save(user);
+    }
+    const payload = { id: user.id };
     return {
       data: {
-        message: 'Phone number verfied',
+        message: 'Phone number verified',
         success: true,
         token: await this.jwtService.signAsync(payload),
       },
