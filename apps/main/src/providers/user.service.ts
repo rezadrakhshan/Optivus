@@ -5,6 +5,7 @@ import { SrvError } from 'src/services/dto';
 import { Generator } from 'src/utils/generator';
 import { Repository } from 'typeorm';
 import { User } from 'src/databases/postgres/entities/user/user.entity';
+import { Profile } from 'src/databases/postgres/entities/user/profile.entity';
 
 @Injectable()
 export class UserService {
@@ -15,6 +16,8 @@ export class UserService {
     private readonly jwtService: JwtService,
     @Inject('USER_REPOSITORY')
     private readonly userRepo: Repository<User>,
+    @Inject('PROFILE_REPOSITORY')
+    private readonly profileRepo: Repository<Profile>,
   ) {}
   async sendOtp(data) {
     const { phone } = data.query;
@@ -46,6 +49,11 @@ export class UserService {
     if (!user) {
       user = await this.userRepo.create({ phone });
       await this.userRepo.save(user);
+    }
+    let profile = await this.profileRepo.findOne({ where: { user } });
+    if (!profile) {
+      profile = await this.profileRepo.create({ user });
+      await this.profileRepo.save(profile);
     }
     const payload = { id: user.id };
     return {
