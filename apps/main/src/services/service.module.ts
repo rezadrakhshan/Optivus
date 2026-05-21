@@ -5,6 +5,7 @@ import { ServiceController } from './service.controller';
 import { Generator } from 'src/utils/generator';
 import { JwtModule } from '@nestjs/jwt';
 import * as config from 'config';
+import { ProfileService } from 'src/providers/profile.service';
 
 const cfg: any = config.get('jwt');
 
@@ -15,7 +16,7 @@ const cfg: any = config.get('jwt');
       secret: cfg.secret,
     }),
   ],
-  providers: [SelfActionService, UserService, Generator],
+  providers: [SelfActionService, UserService, ProfileService, Generator],
   controllers: [ServiceController],
 })
 export class ServiceModule {}

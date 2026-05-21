@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import * as _ from 'lodash';
+import { ProfileService } from 'src/providers/profile.service';
 import { UserService } from 'src/providers/user.service';
 
 @Injectable()
 export class SelfActionService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly profileService: ProfileService,
+  ) {}
   async findAndCall(data) {
     const providerName = data.provider || null;
     const actionName = data.action || null;
@@ -16,6 +20,10 @@ export class SelfActionService {
     switch (providerName) {
       case 'USERS':
         provider = this.userService;
+        break;
+
+      case 'PROFILE':
+        provider = this.profileService;
         break;
 
       default:

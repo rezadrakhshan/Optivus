@@ -6,6 +6,7 @@ export async function swaggerOptions(app, cfg) {
     .setTitle('Optivus')
     .setDescription('This is my custom crm')
     .setVersion(`${cfg.version}`)
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, swaggerOptions);
   const userDocument = SwaggerModule.createDocument(app, swaggerOptions, {

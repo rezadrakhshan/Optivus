@@ -2,7 +2,7 @@ import { Column, Entity, OneToOne } from 'typeorm';
 import { AbstractEntity } from '../abstract.entity';
 import { User } from './user.entity';
 
-@Entity()
+@Entity() 
 export class Profile extends AbstractEntity {
   @Column({ nullable: true })
   firstName: string;

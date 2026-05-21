@@ -22,9 +22,4 @@ export class AuthController {
   async verifyOtp(@Body() data: VerifyOtpDto) {
     return this.authService.verifyOtp(data);
   }
-  @Get('profile')
-  @ApiOperation({ summary: 'This is test api for auth guard' })
-  async profile() {
-    return 'This Profile';
-  }
 }
