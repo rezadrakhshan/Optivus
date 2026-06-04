@@ -28,10 +28,6 @@ services:
   mongodb:
     image: mongo
     container_name: optivus-mongodb
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: optivus_root
-      MONGO_INITDB_ROOT_PASSWORD: optivus_root_pass
-      MONGO_INITDB_DATABASE: optivusmongo
     ports:
       - '27017:27017'
     volumes:
