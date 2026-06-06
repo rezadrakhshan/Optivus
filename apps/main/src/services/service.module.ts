@@ -8,6 +8,7 @@ import * as config from 'config';
 import { ProfileService } from 'src/providers/profile.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Lead, LeadSchema } from 'src/databases/mongo/schemas/lead.schema';
+import { LeadService } from 'src/providers/lead.service';
 
 const cfg: any = config.get('jwt');
 
@@ -19,7 +20,13 @@ const cfg: any = config.get('jwt');
     }),
     MongooseModule.forFeature([{ name: Lead.name, schema: LeadSchema }]),
   ],
-  providers: [SelfActionService, UserService, ProfileService, Generator],
+  providers: [
+    SelfActionService,
+    UserService,
+    ProfileService,
+    LeadService,
+    Generator,
+  ],
   controllers: [ServiceController],
 })
 export class ServiceModule {}

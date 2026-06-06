@@ -7,7 +7,6 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class ProfileService {
-  private static readonly role = 'PROFILE';
   constructor(
     @Inject('USER_REPOSITORY')
     private readonly userRepo: Repository<User>,

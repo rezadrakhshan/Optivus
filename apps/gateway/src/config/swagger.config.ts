@@ -1,4 +1,5 @@
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { LeadModule } from 'src/rest/lead/lead.module';
 import { UserModule } from 'src/rest/user/user.module';
 
 export async function swaggerOptions(app, cfg) {
@@ -12,6 +13,10 @@ export async function swaggerOptions(app, cfg) {
   const userDocument = SwaggerModule.createDocument(app, swaggerOptions, {
     include: [UserModule],
   });
+  const leadDocument = SwaggerModule.createDocument(app, swaggerOptions, {
+    include: [LeadModule],
+  });
   SwaggerModule.setup(`${cfg.version}/docs`, app, document);
   SwaggerModule.setup(`${cfg.version}/docs/user`, app, userDocument);
+  SwaggerModule.setup(`${cfg.version}/docs/lead`, app, leadDocument);
 }
