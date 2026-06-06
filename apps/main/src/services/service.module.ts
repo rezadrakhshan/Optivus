@@ -6,6 +6,8 @@ import { Generator } from 'src/utils/generator';
 import { JwtModule } from '@nestjs/jwt';
 import * as config from 'config';
 import { ProfileService } from 'src/providers/profile.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Lead, LeadSchema } from 'src/databases/mongo/schemas/lead.schema';
 
 const cfg: any = config.get('jwt');
 
@@ -15,6 +17,7 @@ const cfg: any = config.get('jwt');
       global: true,
       secret: cfg.secret,
     }),
+    MongooseModule.forFeature([{ name: Lead.name, schema: LeadSchema }]),
   ],
   providers: [SelfActionService, UserService, ProfileService, Generator],
   controllers: [ServiceController],
