@@ -29,7 +29,7 @@ export class SelfActionService {
         break;
       case 'LEAD':
         provider = this.leadService;
-
+        break;
       default:
         provider = null;
         break;

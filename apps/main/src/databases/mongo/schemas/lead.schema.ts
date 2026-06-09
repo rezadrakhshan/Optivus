@@ -7,7 +7,7 @@ import { LeadType } from '../enums/type.enum';
 export type LeadDocument = HydratedDocument<Lead>;
 
 @Schema({ timestamps: true })
-export class Lead { 
+export class Lead {
   @Prop({ required: true, unique: true })
   trackingCode!: number;
   @Prop({ required: true, enum: LeadType })
@@ -16,9 +16,9 @@ export class Lead {
   status!: LeadStatus;
   @Prop({ required: true, enum: LeadTag })
   tag!: LeadTag;
-  @Prop()
+  @Prop({ type: Date })
   nextFollowUp?: Date;
-  @Prop()
+  @Prop({ type: String })
   notes?: string;
   @Prop({ required: true })
   assignedUserID!: string;

@@ -1,4 +1,4 @@
 export enum LeadStatus {
-  WON,
-  LOST,
+  WON = 'WON',
+  LOST = 'LOST',
 }

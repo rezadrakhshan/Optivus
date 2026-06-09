@@ -1,4 +1,4 @@
 export enum LeadType {
-  THIRDPARTY,
-  CARBODY,
+  THIRDPARTY = 'THIRDPARTY',
+  CARBODY = 'CARBODY',
 }

@@ -6,6 +6,7 @@ import { LeadModule } from './lead/lead.module';
 @Module({
   imports: [
     UserModule,
+    LeadModule,
     RouterModule.register([
       {
         path: 'user',

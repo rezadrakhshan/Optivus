@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsDate, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 import { LeadStatus, LeadTag, LeadType } from './enums';
 
 export class CreateLeadDto {
@@ -36,7 +36,9 @@ export class CreateLeadDto {
     type: Date,
     example: '',
   })
-  nextFollowUp?: Date;
+  @IsOptional()
+  @IsNumber()
+  nextFollowUp?: Number;
 
   @ApiProperty({
     type: String,

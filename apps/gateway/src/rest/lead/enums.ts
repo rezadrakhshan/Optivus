@@ -1,14 +1,14 @@
 export enum LeadStatus {
-  WON,
-  LOST,
+  WON = 'WON',
+  LOST = 'LOST',
 }
 
-export enum LeadTag{
-    RENEWED,
-    FOLLOWUP
+export enum LeadTag {
+  RENEWED = 'RENEWED',
+  FOLLOWUP = 'FOLLOWUP',
 }
-
+ 
 export enum LeadType {
-  THIRDPARTY,
-  CARBODY,
+  THIRDPARTY = 'THIRDPARTY',
+  CARBODY = 'CARBODY',
 }

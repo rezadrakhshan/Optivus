@@ -1,4 +1,4 @@
-export enum LeadTag{
-    RENEWED,
-    FOLLOWUP
+export enum LeadTag {
+  RENEWED = 'RENEWED',
+  FOLLOWUP = 'FOLLOWUP',
 }
