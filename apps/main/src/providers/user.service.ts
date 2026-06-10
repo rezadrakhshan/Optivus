@@ -28,13 +28,11 @@ export class UserService {
     const otp = await this.generator.generateOtp();
     await this.redisService.cacheCli.set(key, otp.otp, 'EX', otp.ttl);
     return {
-      data: {
-        message: 'Otp send successfuly',
-        success: true,
-        otp: otp.otp,
-        phone,
-        expiresIn: otp.ttl,
-      },
+      message: 'Otp send successfuly',
+      success: true,
+      otp: otp.otp,
+      phone,
+      expiresIn: otp.ttl,
     };
   }
 
@@ -57,11 +55,9 @@ export class UserService {
     }
     const payload = { id: user.id };
     return {
-      data: {
-        message: 'Phone number verified',
-        success: true,
-        token: await this.jwtService.signAsync(payload),
-      },
+      message: 'Phone number verified',
+      success: true,
+      token: await this.jwtService.signAsync(payload),
     };
   }
 }

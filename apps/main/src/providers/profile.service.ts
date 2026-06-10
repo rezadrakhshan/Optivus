@@ -22,11 +22,9 @@ export class ProfileService {
     if (!profile) throw new SrvError(HttpStatus.BAD_REQUEST, 'User not found');
     profile = await this.profileRepo.update(profile.id, query.data);
     return {
-      data: {
-        message: 'profile updated',
-        success: true,
-        data: query.data,
-      },
+      message: 'profile updated',
+      success: true,
+      data: query.data,
     };
   }
 

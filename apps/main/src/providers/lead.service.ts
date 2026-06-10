@@ -1,8 +1,9 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Lead } from 'src/databases/mongo/schemas/lead.schema';
 import { User } from 'src/databases/postgres/entities/user/user.entity';
+import { SrvError } from 'src/services/dto';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -25,12 +26,31 @@ export class LeadService {
         assignedUserID: id,
       });
       await result.save();
-      return result;
+      return {
+        message: 'Lead created',
+        success: true,
+        data: result,
+      };
     } catch (error) {
-      throw new HttpException(
-        'Tracking code already exists',
-        HttpStatus.CONFLICT,
-      );
+      throw new SrvError(HttpStatus.CONFLICT, 'Tracking code already exists');
     }
+  }
+
+  async updateLead({ query }) {
+    const { data, id, leadID } = query;
+    let target = await this.leadModel.findOne({
+      assignedUserID: id,
+      _id: leadID,
+    });
+    if (!target)
+      throw new SrvError(HttpStatus.NOT_FOUND, 'Lead does not exists');
+    target = await this.leadModel.findByIdAndUpdate(leadID, data, {
+      returnDocument: 'after',
+    });
+    return {
+      message: 'Lead Updated',
+      success: true,
+      data: target,
+    };
   }
 }

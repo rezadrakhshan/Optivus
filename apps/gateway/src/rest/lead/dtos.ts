@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsDate, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 import { LeadStatus, LeadTag, LeadType } from './enums';
 
@@ -47,3 +47,5 @@ export class CreateLeadDto {
   })
   note?: string;
 }
+
+export class UpdateLeadDto extends PartialType(CreateLeadDto) {}
