@@ -27,4 +27,34 @@ export class LeadService {
 
     return HandlerSrcCliResponse(result);
   }
+
+  async getAllLeads(req) {
+    const result = await this.mainSrcCli.callAction({
+      provider: 'LEAD',
+      action: 'getAllLeads',
+      query: req.user.id,
+    });
+    return HandlerSrcCliResponse(result);
+  }
+
+  async getLeadDetail(req, id: string) {
+    const dto = { id, userID: req.user.id };
+    const result = await this.mainSrcCli.callAction({
+      provider: 'LEAD',
+      action: 'getLeadDetail',
+      query: dto,
+    });
+
+    return HandlerSrcCliResponse(result);
+  }
+
+  async removeLead(id: string, req) {
+    const dto = { id, userID: req.user.id };
+    const result = await this.mainSrcCli.callAction({
+      provider: 'LEAD',
+      action: 'removeLead',
+      query: dto,
+    });
+    return HandlerSrcCliResponse(result);
+  }
 }

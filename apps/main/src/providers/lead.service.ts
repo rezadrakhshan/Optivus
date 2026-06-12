@@ -1,6 +1,7 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpCode, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { threadCpuUsage } from 'process';
 import { Lead } from 'src/databases/mongo/schemas/lead.schema';
 import { User } from 'src/databases/postgres/entities/user/user.entity';
 import { SrvError } from 'src/services/dto';
@@ -51,6 +52,44 @@ export class LeadService {
       message: 'Lead Updated',
       success: true,
       data: target,
+    };
+  }
+  async getAllLeads({ query }) {
+    const result = await this.leadModel.find({ assignedUserID: query });
+    return {
+      message: 'List of leads is here!',
+      success: true,
+      data: result,
+    };
+  }
+
+  async getLeadDetail({ query }) {
+    const { id, userID } = query;
+    const target = await this.leadModel.findOne({
+      _id: id,
+      assignedUserID: userID,
+    });
+    if (!target)
+      throw new SrvError(HttpStatus.NOT_FOUND, 'Lead does not exist');
+    return {
+      message: 'Lead detail is here!',
+      success: true,
+      data: target,
+    };
+  }
+
+  async removeLead({ query }) {
+    const { id, userID } = query;
+    const result = await this.leadModel.findOneAndDelete({
+      _id: id,
+      assignedUserID: userID,
+    });
+    if (!result)
+      throw new SrvError(HttpStatus.NOT_FOUND, 'Lead does not exist');
+    return {
+      message: 'Lead removed',
+      success: true,
+      data: result,
     };
   }
 }
