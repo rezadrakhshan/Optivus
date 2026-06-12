@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import * as mongoose from 'mongoose';
 import { LeadStatus } from '../enums/status.enum';
 import { LeadTag } from '../enums/tag.enum';
 import { LeadType } from '../enums/type.enum';
+import { Category } from './category.schema';
 
-export type LeadDocument = HydratedDocument<Lead>;
+export type LeadDocument = mongoose.HydratedDocument<Lead>;
 
 @Schema({ timestamps: true })
 export class Lead {
@@ -22,6 +23,8 @@ export class Lead {
   notes?: string;
   @Prop({ required: true })
   assignedUserID!: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Category' })
+  category: Category;
 }
 
 export const LeadSchema = SchemaFactory.createForClass(Lead);
