@@ -13,6 +13,7 @@ import {
   Category,
   CategorySchema,
 } from 'src/databases/mongo/schemas/category.schema';
+import { CategoryService } from 'src/providers/category.service';
 
 const cfg: any = config.get('jwt');
 
@@ -32,6 +33,7 @@ const cfg: any = config.get('jwt');
     UserService,
     ProfileService,
     LeadService,
+    CategoryService,
     Generator,
   ],
   controllers: [ServiceController],

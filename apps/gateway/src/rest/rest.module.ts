@@ -8,6 +8,7 @@ import { CategoryModule } from './category/category.module';
   imports: [
     UserModule,
     LeadModule,
+    CategoryModule,
     RouterModule.register([
       {
         path: 'user',

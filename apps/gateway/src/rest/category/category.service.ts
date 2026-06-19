@@ -1,7 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { MainServiceClient } from 'src/services/main.service';
+import { CreateCategoryDto } from './dtos';
+import { HandlerSrcCliResponse } from 'src/response/http_exception.filter';
 
 @Injectable()
 export class CategoryService {
   constructor(private readonly mainSrcCli: MainServiceClient) {}
+
+  async createCategory(data: CreateCategoryDto, req) {
+    const dto = { data, user: req.user.id };
+
+    const result = await this.mainSrcCli.callAction({
+      provider: 'CATEGORY',
+      action: 'createCategory',
+      query: dto,
+    });
+
+    return HandlerSrcCliResponse(result);
+  }
 }
