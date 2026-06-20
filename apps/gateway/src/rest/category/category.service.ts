@@ -28,4 +28,24 @@ export class CategoryService {
     });
     return HandlerSrcCliResponse(result);
   }
+
+  async getAllCategories(req) {
+    const result = await this.mainSrcCli.callAction({
+      provider: 'CATEGORY',
+      action: 'getAllCategories',
+      query: req.user.id,
+    });
+
+    return HandlerSrcCliResponse(result);
+  }
+
+  async removeCategory(id: string, req) {
+    const dto = { id, createdBy: req.user.id };
+    const result = await this.mainSrcCli.callAction({
+      provider: 'CATEGORY',
+      action: 'removeCategory',
+      query: dto,
+    });
+    return HandlerSrcCliResponse(result);
+  }
 }

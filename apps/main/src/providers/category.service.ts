@@ -42,4 +42,29 @@ export class CategoryService {
       data: target,
     };
   }
+
+  async getAllCategories({ query }) {
+    const result = await this.categoryModel.find({ createdBy: query });
+    return {
+      message: 'All categories is here!',
+      success: true,
+      data: result,
+    };
+  }
+
+  async removeCategory({ query }) {
+    const { id, createdBy } = query;
+
+    const result = await this.categoryModel.findOneAndDelete({
+      _id: id,
+      createdBy: createdBy,
+    });
+    if (!result)
+      throw new SrvError(HttpStatus.NOT_FOUND, 'category does not exists');
+
+    return {
+      message: 'Category was delete',
+      success: true,
+    };
+  }
 }

@@ -1,4 +1,13 @@
-import { Body, Controller, Post, Req, Put, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Req,
+  Put,
+  Param,
+  Get,
+  Delete,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CategoryService } from './category.service';
 import { Request } from 'express';
@@ -24,5 +33,17 @@ export class CategoryController {
     @Body() data: UpdateCategoryDto,
   ) {
     return this.categoryService.updateCategory(id, req, data);
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'endpoint for get all categories' })
+  async getAllCategories(@Req() req: Request) {
+    return this.categoryService.getAllCategories(req);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'endpoint for remove single category' })
+  async removeCategory(@Param('id') id: string, @Req() req: Request) {
+    return this.categoryService.removeCategory(id, req);
   }
 }
