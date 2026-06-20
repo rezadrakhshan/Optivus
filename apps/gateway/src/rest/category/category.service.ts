@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MainServiceClient } from 'src/services/main.service';
-import { CreateCategoryDto } from './dtos';
+import { CreateCategoryDto, UpdateCategoryDto } from './dtos';
 import { HandlerSrcCliResponse } from 'src/response/http_exception.filter';
 
 @Injectable()
@@ -16,6 +16,16 @@ export class CategoryService {
       query: dto,
     });
 
+    return HandlerSrcCliResponse(result);
+  }
+
+  async updateCategory(id: string, req, data: UpdateCategoryDto) {
+    const dto = { id, createdBy: req.user.id, data };
+    const result = await this.mainSrcCli.callAction({
+      provider: 'CATEGORY',
+      action: 'updateCategory',
+      query: dto,
+    });
     return HandlerSrcCliResponse(result);
   }
 }
