@@ -1,7 +1,8 @@
 import { HttpCode, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { threadCpuUsage } from 'process';
+import { Category } from 'src/databases/mongo/schemas/category.schema';
 import { Lead } from 'src/databases/mongo/schemas/lead.schema';
 import { User } from 'src/databases/postgres/entities/user/user.entity';
 import { SrvError } from 'src/services/dto';
@@ -12,17 +13,22 @@ export class LeadService {
   constructor(
     @Inject('USER_REPOSITORY') private readonly userRepo: Repository<User>,
     @InjectModel(Lead.name) private readonly leadModel: Model<Lead>,
+    @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
   ) {}
 
   async createLead({ query }) {
     const { data, id } = query;
+    const category = await this.categoryModel.findById(data.category);
+    if (!category || !Types.ObjectId.isValid(data.category))
+      throw new SrvError(HttpStatus.NOT_FOUND, 'Invalid category');
     try {
-      const result = await new this.leadModel({
+      const result = new this.leadModel({
         trackingCode: data.trackingCode,
         type: data.type,
         status: data.status,
         tag: data.tag,
         notes: data.notes,
+        category: category,
         nextFollowUp: data.nextFollowUp,
         assignedUserID: id,
       });

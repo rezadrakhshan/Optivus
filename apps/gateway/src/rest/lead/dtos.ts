@@ -1,5 +1,11 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsDate,
+  IsMongoId,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+} from 'class-validator';
 import { LeadStatus, LeadTag, LeadType } from './enums';
 
 export class CreateLeadDto {
@@ -23,7 +29,7 @@ export class CreateLeadDto {
     enumName: 'LeadStatus',
     required: true,
   })
-  stauts!: LeadStatus;
+  status!: LeadStatus;
   @ApiProperty({
     enum: LeadTag,
     enumName: 'LeadTag',
@@ -46,6 +52,15 @@ export class CreateLeadDto {
     example: 'This is a sample note',
   })
   note?: string;
+
+  @ApiProperty({
+    type: String,
+    required: true,
+    example: '6a36e978408a73b81a9de811',
+  })
+  @IsMongoId()
+  @IsNotEmpty()
+  category: string;
 }
 
 export class UpdateLeadDto extends PartialType(CreateLeadDto) {}
