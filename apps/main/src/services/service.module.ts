@@ -14,6 +14,10 @@ import {
   CategorySchema,
 } from 'src/databases/mongo/schemas/category.schema';
 import { CategoryService } from 'src/providers/category.service';
+import {
+  Activity,
+  ActivitySchema,
+} from 'src/databases/mongo/schemas/activity.schema';
 
 const cfg: any = config.get('jwt');
 
@@ -26,6 +30,7 @@ const cfg: any = config.get('jwt');
     MongooseModule.forFeature([
       { name: Lead.name, schema: LeadSchema },
       { name: Category.name, schema: CategorySchema },
+      { name: Activity.name, schema: ActivitySchema },
     ]),
   ],
   providers: [
