@@ -2,7 +2,7 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Category } from 'src/databases/mongo/schemas/category.schema';
-import { SrvError } from 'src/services/dto';
+import { ServiceResponseData, SrvError } from 'src/services/dto';
 
 @Injectable()
 export class CategoryService {
@@ -10,7 +10,7 @@ export class CategoryService {
     @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
   ) {}
 
-  async createCategory({ query }) {
+  async createCategory({ query }): Promise<ServiceResponseData> {
     const { data, user } = query;
     const category = await this.categoryModel.create({
       name: data.name,
@@ -19,12 +19,14 @@ export class CategoryService {
     });
     return {
       message: 'Category created',
-      success: true,
-      data: category,
+      data: {
+        success: true,
+        category,
+      },
     };
   }
 
-  async updateCategory({ query }) {
+  async updateCategory({ query }): Promise<ServiceResponseData> {
     const { data, createdBy, id } = query;
     if (!Types.ObjectId.isValid(id))
       throw new SrvError(HttpStatus.BAD_REQUEST, 'invalid id');
@@ -38,21 +40,25 @@ export class CategoryService {
       throw new SrvError(HttpStatus.NOT_FOUND, 'category does not exists');
     return {
       message: 'Category updated',
-      success: true,
-      data: target,
+      data: {
+        success: true,
+        target,
+      },
     };
   }
 
-  async getAllCategories({ query }) {
+  async getAllCategories({ query }): Promise<ServiceResponseData> {
     const result = await this.categoryModel.find({ createdBy: query });
     return {
       message: 'All categories is here!',
-      success: true,
-      data: result,
+      data: {
+        success: true,
+        result,
+      },
     };
   }
 
-  async removeCategory({ query }) {
+  async removeCategory({ query }): Promise<ServiceResponseData> {
     const { id, createdBy } = query;
 
     const result = await this.categoryModel.findOneAndDelete({
@@ -64,7 +70,6 @@ export class CategoryService {
 
     return {
       message: 'Category was delete',
-      success: true,
     };
   }
 }

@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { RedisService } from 'src/databases/redis/redis.service';
-import { SrvError } from 'src/services/dto';
+import { ServiceResponseData, SrvError } from 'src/services/dto';
 import { Generator } from 'src/utils/generator';
 import { Repository } from 'typeorm';
 import { User } from 'src/databases/postgres/entities/user/user.entity';
@@ -28,7 +28,7 @@ export class UserService {
     const otp = await this.generator.generateOtp();
     await this.redisService.cacheCli.set(key, otp.otp, 'EX', otp.ttl);
     return {
-      message: 'Otp send successfuly',
+      message: 'Otp send successfully',
       success: true,
       otp: otp.otp,
       phone,

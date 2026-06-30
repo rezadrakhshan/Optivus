@@ -1,7 +1,7 @@
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Profile } from 'src/databases/postgres/entities/user/profile.entity';
 import { User } from 'src/databases/postgres/entities/user/user.entity';
-import { SrvError } from 'src/services/dto';
+import { ServiceResponseData, SrvError } from 'src/services/dto';
 import { Repository } from 'typeorm';
 import * as _ from 'lodash';
 
@@ -14,7 +14,7 @@ export class ProfileService {
     private readonly profileRepo: Repository<Profile>,
   ) {}
 
-  async updateProfile({ query }) {
+  async updateProfile({ query }): Promise<ServiceResponseData> {
     const user: any = await this.userRepo.findOne({ where: { id: query.id } });
     let profile: any = await this.profileRepo.findOne({
       where: { id: user.profile },
@@ -23,12 +23,14 @@ export class ProfileService {
     profile = await this.profileRepo.update(profile.id, query.data);
     return {
       message: 'profile updated',
-      success: true,
-      data: query.data,
+      data: {
+        success: true,
+        data: query.data,
+      },
     };
   }
 
-  async getProfile({ query }) {
+  async getProfile({ query }): Promise<ServiceResponseData> {
     const user: any = await this.userRepo.findOne({ where: { id: query } });
     const profile = await this.profileRepo.findOne({
       where: { id: user?.profile },
@@ -36,16 +38,18 @@ export class ProfileService {
     if (!profile) throw new SrvError(HttpStatus.BAD_REQUEST, 'User not found');
     return {
       message: 'profile detail is here!',
-      success: true,
-      data: _.pick(profile, [
-        'firstName',
-        'lastName',
-        'email',
-        'position',
-        'company',
-        'location',
-        'image',
-      ]),
+      data: {
+        success: true,
+        data: _.pick(profile, [
+          'firstName',
+          'lastName',
+          'email',
+          'position',
+          'company',
+          'location',
+          'image',
+        ]),
+      },
     };
   }
 }

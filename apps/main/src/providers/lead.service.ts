@@ -5,18 +5,17 @@ import { threadCpuUsage } from 'process';
 import { Category } from 'src/databases/mongo/schemas/category.schema';
 import { Lead } from 'src/databases/mongo/schemas/lead.schema';
 import { User } from 'src/databases/postgres/entities/user/user.entity';
-import { SrvError } from 'src/services/dto';
+import { ServiceResponseData, SrvError } from 'src/services/dto';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class LeadService {
   constructor(
-    @Inject('USER_REPOSITORY') private readonly userRepo: Repository<User>,
     @InjectModel(Lead.name) private readonly leadModel: Model<Lead>,
     @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
   ) {}
 
-  async createLead({ query }) {
+  async createLead({ query }): Promise<ServiceResponseData> {
     const { data, id } = query;
     const category = await this.categoryModel.findById(data.category);
     if (!category || !Types.ObjectId.isValid(data.category))
@@ -35,15 +34,17 @@ export class LeadService {
       await result.save();
       return {
         message: 'Lead created',
-        success: true,
-        data: result,
+        data: {
+          success: true,
+          result,
+        },
       };
     } catch (error) {
       throw new SrvError(HttpStatus.CONFLICT, 'Tracking code already exists');
     }
   }
 
-  async updateLead({ query }) {
+  async updateLead({ query }): Promise<ServiceResponseData> {
     const { data, id, leadID } = query;
     let target = await this.leadModel.findOne({
       assignedUserID: id,
@@ -56,20 +57,24 @@ export class LeadService {
     });
     return {
       message: 'Lead Updated',
-      success: true,
-      data: target,
+      data: {
+        success: true,
+        target,
+      },
     };
   }
-  async getAllLeads({ query }) {
+  async getAllLeads({ query }): Promise<ServiceResponseData> {
     const result = await this.leadModel.find({ assignedUserID: query });
     return {
       message: 'List of leads is here!',
-      success: true,
-      data: result,
+      data: {
+        success: true,
+        result,
+      },
     };
   }
 
-  async getLeadDetail({ query }) {
+  async getLeadDetail({ query }): Promise<ServiceResponseData> {
     const { id, userID } = query;
     const target = await this.leadModel.findOne({
       _id: id,
@@ -79,12 +84,14 @@ export class LeadService {
       throw new SrvError(HttpStatus.NOT_FOUND, 'Lead does not exist');
     return {
       message: 'Lead detail is here!',
-      success: true,
-      data: target,
+      data: {
+        success: true,
+        target,
+      },
     };
   }
 
-  async removeLead({ query }) {
+  async removeLead({ query }): Promise<ServiceResponseData> {
     const { id, userID } = query;
     const result = await this.leadModel.findOneAndDelete({
       _id: id,
@@ -94,8 +101,10 @@ export class LeadService {
       throw new SrvError(HttpStatus.NOT_FOUND, 'Lead does not exist');
     return {
       message: 'Lead removed',
-      success: true,
-      data: result,
+      data: {
+        success: true,
+        result,
+      },
     };
   }
 }
