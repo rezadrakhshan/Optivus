@@ -6,4 +6,4 @@ export enum ActivityType {
   CATEGORY_CHANGED,
   FOLLOWUP_CREATED,
   FOLLOWUP_COMPLETED,
-}
+} 

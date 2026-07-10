@@ -14,7 +14,7 @@ async function bootstrap() {
         host: cfg.host,
         port: cfg.port,
       },
-    },
+    }, 
   );
   await app.listen();
 }

@@ -11,7 +11,7 @@ export type ActivityDocument = mongoose.HydratedDocument<Activity>;
 export class Activity {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Lead', required: true })
   leadID: Lead;
-
+ 
   @Prop({ required: true, enum: ActivityType })
   type: ActivityType;
 
