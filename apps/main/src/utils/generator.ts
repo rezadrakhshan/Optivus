@@ -21,7 +21,7 @@ export class Generator {
   }
 
   async activityGenerator(data: ActivityInputDto) {
-    if (Types.ObjectId.isValid(data.leadID))
+    if (!Types.ObjectId.isValid(data.leadID))
       throw new SrvError(HttpStatus.BAD_REQUEST, 'Invalid lead ID');
 
     await this.activityModel.create(data);
