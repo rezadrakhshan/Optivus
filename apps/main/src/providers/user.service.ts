@@ -6,6 +6,7 @@ import { Generator } from 'src/utils/generator';
 import { Repository } from 'typeorm';
 import { User } from 'src/databases/postgres/entities/user/user.entity';
 import { Profile } from 'src/databases/postgres/entities/user/profile.entity';
+import { MessageSender } from 'src/utils/message-sender';
 
 @Injectable()
 export class UserService {
@@ -14,6 +15,7 @@ export class UserService {
     private readonly generator: Generator,
     private readonly redisService: RedisService,
     private readonly jwtService: JwtService,
+    private readonly msgSender: MessageSender,
     @Inject('USER_REPOSITORY')
     private readonly userRepo: Repository<User>,
     @Inject('PROFILE_REPOSITORY')
@@ -27,6 +29,7 @@ export class UserService {
       throw new SrvError(HttpStatus.BAD_REQUEST, 'Otp already sent');
     const otp = await this.generator.generateOtp();
     await this.redisService.cacheCli.set(key, otp.otp, 'EX', otp.ttl);
+    await this.msgSender.sendOtp(otp.otp, phone);
     return {
       message: 'Otp send successfully',
       success: true,

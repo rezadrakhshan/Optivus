@@ -18,6 +18,7 @@ import {
   Activity,
   ActivitySchema,
 } from 'src/databases/mongo/schemas/activity.schema';
+import { MessageSender } from 'src/utils/message-sender';
 
 const cfg: any = config.get('jwt');
 
@@ -40,6 +41,7 @@ const cfg: any = config.get('jwt');
     LeadService,
     CategoryService,
     Generator,
+    MessageSender,
   ],
   controllers: [ServiceController],
 })
