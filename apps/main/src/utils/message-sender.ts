@@ -18,10 +18,10 @@ export class MessageSender {
       },
       data: {
         mobile: phone,
-        templateId: '123456',
+        templateId: '341054',
         parameters: [
           {
-            name: 'Code',
+            name: 'CODE',
             value: otp.toString(),
           },
         ],
