@@ -8,8 +8,8 @@ import { HandlerSrcCliResponse } from 'src/response/http_exception.filter';
 export class ProfileService {
   constructor(private readonly mainSrcCli: MainServiceClient) {}
 
-  async updateProfile(data: UpdateProfileDto, req) {
-    const dto = { data, id: req.user.id };
+  async updateProfile(data: UpdateProfileDto, req, image) {
+    const dto = { data, id: req.user.id, profile: image };
     const body = await this.mainSrcCli.callAction({
       provider: 'PROFILE',
       action: 'updateProfile',
