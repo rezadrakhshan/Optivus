@@ -19,6 +19,7 @@ import {
   ActivitySchema,
 } from 'src/databases/mongo/schemas/activity.schema';
 import { MessageSender } from 'src/utils/message-sender';
+import { StorageService } from 'src/utils/storage.service';
 
 const cfg: any = config.get('jwt');
 
@@ -42,6 +43,7 @@ const cfg: any = config.get('jwt');
     CategoryService,
     Generator,
     MessageSender,
+    StorageService,
   ],
   controllers: [ServiceController],
 })
