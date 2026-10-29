@@ -1,0 +1,173 @@
+@import 'tailwindcss';
+
+/* Dark mode follows the `.dark` class set on <html> by the theme script / ThemeProvider. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens.
+ *
+ * Brand palette (primitives): #2C1250 #251C31 #4F228D #693B93 #CCD6F6 #D9D9D9 #000000.
+ * Components never use raw hex values: they use the semantic tokens below through
+ * Tailwind classes such as `bg-surface`, `text-muted-foreground`, `ring-ring`.
+ *
+ * Every text/background pair here is checked against WCAG AA by
+ * src/theme/contrast.test.ts. Keep values as 6-digit hex so that test can read them.
+ */
+:root {
+  --background: #f6f4fa;
+  --surface: #fbfafd;
+  --surface-raised: #ffffff;
+  --surface-hover: #efeaf6;
+  --border: #e3deec;
+  --input: #8a7f9e;
+  --foreground: #1b1424;
+  --muted-foreground: #5e5470;
+  --primary: #4f228d;
+  --primary-hover: #2c1250;
+  --primary-foreground: #ffffff;
+  --accent: #ece4f7;
+  --accent-foreground: #4f228d;
+  --ring: #693b93;
+  --success: #15803d;
+  --danger: #b42318;
+  --warning: #8a5005;
+  --info: #1d4ed8;
+  --overlay: #000000;
+}
+
+.dark {
+  --background: #14101b;
+  --surface: #1e1728;
+  --surface-raised: #251c31;
+  --surface-hover: #2e2340;
+  --border: #3a2e4a;
+  --input: #776a8c;
+  --foreground: #eceefb;
+  --muted-foreground: #a9a3bc;
+  --primary: #693b93;
+  --primary-hover: #7a4ba8;
+  --primary-foreground: #ffffff;
+  --accent: #2f2242;
+  --accent-foreground: #d9c6f3;
+  --ring: #a77fdb;
+  --success: #4ade80;
+  --danger: #f87171;
+  --warning: #fbbf24;
+  --info: #93c5fd;
+  --overlay: #000000;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-overlay: var(--overlay);
+
+  --font-sans: 'Vazirmatn Variable', 'Vazirmatn', Tahoma, system-ui, sans-serif;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  --shadow-card: 0 1px 2px rgb(27 20 36 / 0.04), 0 2px 8px rgb(27 20 36 / 0.04);
+
+  /* Layout sizes from the approved UI spec. */
+  --spacing-sidebar: 16.5rem; /* 264px */
+  --spacing-sidebar-collapsed: 4.5rem; /* 72px */
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    font-feature-settings: 'ss01';
+  }
+
+  *,
+  ::before,
+  ::after {
+    @apply border-border;
+  }
+
+  /* One consistent, always-visible keyboard focus indicator. */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+
+  ::selection {
+    @apply bg-primary text-primary-foreground;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Radix dialog/sheet enter-exit animations (opacity + slide, 200ms). */
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes overlay-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes sheet-in-right {
+  from {
+    transform: translateX(100%);
+  }
+}
+@keyframes sheet-out-right {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@utility animate-overlay-in {
+  animation: overlay-in 200ms ease-out;
+}
+@utility animate-overlay-out {
+  animation: overlay-out 150ms ease-in;
+}
+@utility animate-sheet-in-right {
+  animation: sheet-in-right 200ms ease-out;
+}
+@utility animate-sheet-out-right {
+  animation: sheet-out-right 150ms ease-in;
+}
+@utility animate-fade-in {
+  animation: fade-in 150ms ease-out;
+}

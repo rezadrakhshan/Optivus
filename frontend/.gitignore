@@ -1,0 +1,28 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+*.tsbuildinfo
+
+# Environment (keep the example)
+.env
+.env.*
+!.env.example
+
+# Tests
+coverage
+playwright-report
+test-results
+blob-report
+screenshots
+playwright/.cache
+
+# Logs
+*.log
+
+# Editors / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
