@@ -51,7 +51,7 @@ export class CreateLeadDto {
     required: false,
     example: 'This is a sample note',
   })
-  note?: string;
+  notes?: string;
 
   @ApiProperty({
     type: String,
