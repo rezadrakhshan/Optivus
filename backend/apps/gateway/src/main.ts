@@ -10,6 +10,9 @@ const cfg: any = config.get('info');
 async function bootstrap() {
   const server = express();
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
+  app.enableCors({
+    origin: ['http://localhost:5173', 'http://localhost:4173'],
+  });
   await swaggerOptions(app, cfg);
   await app.listen(cfg.port ?? 3000);
 }
